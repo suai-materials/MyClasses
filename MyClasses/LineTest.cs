@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace MyClasses;
 
+// Тесты, которые тестируют функциональность класса Line
 public class LineTests
 {
     [SetUp]
