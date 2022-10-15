@@ -8,7 +8,7 @@ namespace MyClasses;
  Методы класса: проверка, является ли матрица верхнетреугольной или нижнетреугольной, вывод матрицы. 
  В классе предусмотреть методы: сложение, вычитание, умножение матриц, умножение матрицы на число. */
 
-public class Matrix
+public class SquareMatrix
 {
     // Размерность матрицы
     private int _n;
@@ -49,7 +49,7 @@ public class Matrix
         }
     }
 
-    public Matrix(int n)
+    public SquareMatrix(int n)
     {
         N = n;
         var matrixList = new List<List<int>>();
@@ -65,7 +65,7 @@ public class Matrix
         MatrixList = matrixList;
     }
 
-    public Matrix(int n, List<List<int>> matrixList)
+    public SquareMatrix(int n, List<List<int>> matrixList)
     {
         N = n;
         MatrixList = matrixList;
@@ -114,30 +114,66 @@ public class Matrix
     }
 
     // Сложение матриц
-    public static Matrix operator +(Matrix matrix, Matrix matrix2)
+    public static SquareMatrix operator +(SquareMatrix squareMatrix, SquareMatrix squareMatrix2)
     {
-        if (matrix2.N != matrix.N)
+        if (squareMatrix2.N != squareMatrix.N)
             throw new Exception("Матрицы не совпадают по размерности");
-        var newMatrix = new Matrix(matrix.N);
-        for (int i = 0; i < matrix.N; i++)
+        var newMatrix = new SquareMatrix(squareMatrix.N);
+        for (int i = 0; i < squareMatrix.N; i++)
         {
-            for (int j = 0; j < matrix.N; j++)
-                newMatrix[i][j] = matrix[i][j] + matrix2[i][j];
+            for (int j = 0; j < squareMatrix.N; j++)
+                newMatrix[i][j] = squareMatrix[i][j] + squareMatrix2[i][j];
         }
 
         return newMatrix;
     }
-    
+
     // Вычитание матриц
-    public static Matrix operator -(Matrix matrix, Matrix matrix2)
+    public static SquareMatrix operator -(SquareMatrix squareMatrix, SquareMatrix squareMatrix2)
     {
-        if (matrix2.N != matrix.N)
+        if (squareMatrix2.N != squareMatrix.N)
             throw new Exception("Матрицы не совпадают по размерности");
-        var newMatrix = new Matrix(matrix.N);
-        for (int i = 0; i < matrix.N; i++)
+        var newMatrix = new SquareMatrix(squareMatrix.N);
+        for (int i = 0; i < squareMatrix.N; i++)
         {
-            for (int j = 0; j < matrix.N; j++)
-                newMatrix[i][j] = matrix[i][j] - matrix2[i][j];
+            for (int j = 0; j < squareMatrix.N; j++)
+                newMatrix[i][j] = squareMatrix[i][j] - squareMatrix2[i][j];
+        }
+
+        return newMatrix;
+    }
+
+    // Умножение матрицы на число
+    public static SquareMatrix operator *(SquareMatrix squareMatrix, int n)
+    {
+        var newMatrix = new SquareMatrix(squareMatrix.N);
+        for (int i = 0; i < squareMatrix.N; i++)
+        {
+            for (int j = 0; j < squareMatrix.N; j++)
+                newMatrix[i][j] = squareMatrix[i][j] * n;
+        }
+
+        return newMatrix;
+    }
+
+    // Перемножение матриц
+    public static SquareMatrix operator *(SquareMatrix squareMatrix, SquareMatrix squareMatrix2)
+    {
+        if (squareMatrix2.N != squareMatrix.N)
+            throw new Exception("Матрицы не совпадают по размерности");
+        var newMatrix = new SquareMatrix(squareMatrix.N);
+        for (int i = 0; i < squareMatrix.N; i++)
+        {
+            for (int j = 0; j < squareMatrix.N; j++)
+            {
+                int cellValue = 0;
+                for (int j1 = 0; j1 < squareMatrix.N; j1++)
+                {
+                    cellValue += squareMatrix[i][j1] * squareMatrix2[j1][j];
+                }
+
+                newMatrix[i][j] = cellValue;
+            }
         }
 
         return newMatrix;
