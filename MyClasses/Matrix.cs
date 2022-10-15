@@ -11,7 +11,18 @@ namespace MyClasses;
 public class Matrix
 {
     // Размерность матрицы
-    public uint N;
+    private int _n;
+
+    public int N
+    {
+        get => _n;
+        set
+        {
+            if (value <= 0)
+                throw new Exception("Размерность матрицы должна быть больше 0");
+            _n = value;
+        }
+    }
 
     // Список содержащий элементы матрицы
     private List<List<int>> _matrixList = null!;
@@ -27,7 +38,18 @@ public class Matrix
         }
     }
 
-    public Matrix(uint n)
+    public List<int> this[int i]
+    {
+        get { return MatrixList[i]; }
+        set
+        {
+            if (value.Count != N)
+                throw new Exception("Вводимая строка неподходит по размерности");
+            MatrixList[i] = value;
+        }
+    }
+
+    public Matrix(int n)
     {
         N = n;
         var matrixList = new List<List<int>>();
@@ -43,7 +65,7 @@ public class Matrix
         MatrixList = matrixList;
     }
 
-    public Matrix(uint n, List<List<int>> matrixList)
+    public Matrix(int n, List<List<int>> matrixList)
     {
         N = n;
         MatrixList = matrixList;
@@ -56,7 +78,68 @@ public class Matrix
         {
             output += '\t' + String.Join('\t', list) + '\n';
         }
+
         output += "]";
         return output;
+    }
+
+    // Это верхняя треугольная матрица?
+    public bool IsUpperTriangular()
+    {
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                if (MatrixList[i][j] != 0)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Это нижняя треугольная матрица?
+    public bool IsBottomTriangular()
+    {
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = N - 1; j > i; j--)
+            {
+                if (MatrixList[i][j] != 0)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Сложение матриц
+    public static Matrix operator +(Matrix matrix, Matrix matrix2)
+    {
+        if (matrix2.N != matrix.N)
+            throw new Exception("Матрицы не совпадают по размерности");
+        var newMatrix = new Matrix(matrix.N);
+        for (int i = 0; i < matrix.N; i++)
+        {
+            for (int j = 0; j < matrix.N; j++)
+                newMatrix[i][j] = matrix[i][j] + matrix2[i][j];
+        }
+
+        return newMatrix;
+    }
+    
+    // Вычитание матриц
+    public static Matrix operator -(Matrix matrix, Matrix matrix2)
+    {
+        if (matrix2.N != matrix.N)
+            throw new Exception("Матрицы не совпадают по размерности");
+        var newMatrix = new Matrix(matrix.N);
+        for (int i = 0; i < matrix.N; i++)
+        {
+            for (int j = 0; j < matrix.N; j++)
+                newMatrix[i][j] = matrix[i][j] - matrix2[i][j];
+        }
+
+        return newMatrix;
     }
 }
