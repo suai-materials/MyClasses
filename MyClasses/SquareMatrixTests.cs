@@ -99,7 +99,7 @@ public class SquareMatrixTests
             var matrix = new SquareMatrix(2, myMatrixList);
             matrix = ((matrix + matrix) * 2 - matrix) * matrix;
             Assert.AreEqual(matrix[0], new List<int>() {21, 30});
-            Assert.AreEqual(matrix[0], new List<int>() {45, 60});
+            Assert.AreEqual(matrix[1], new List<int>() {45, 66});
         }
 
     }
